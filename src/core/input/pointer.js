@@ -19,7 +19,7 @@ export default class Input {
         this.MIN_ZOOM = comp.props.config.MIN_ZOOM
         this.MAX_ZOOM = comp.props.config.MAX_ZOOM
 
-        if (Utils.isMobile) this.MIN_ZOOM *= 0.5
+       // if (Utils.isMobile) this.MIN_ZOOM *= 0.5
 
         this.canvas = comp.canvas
         this.ctx = comp.ctx
@@ -69,7 +69,7 @@ export default class Input {
         mc.add(new Hammer.Tap())
         mc.add(new Hammer.Pinch({ threshold: 0}))
         mc.get('pinch').set({ enable: true })
-        if (Utils.isMobile) mc.add(new Hammer.Press())
+       // if (Utils.isMobile) mc.add(new Hammer.Press())
 
         mc.on('panstart', event => {
             if (this.cursor.scroll_lock) return
@@ -99,10 +99,10 @@ export default class Input {
         })
 
         mc.on('panmove', event => {
-            if (Utils.isMobile) {
-                this.calcOffset()
-                this.propagate('mousemove', this.touch2mouse(event))
-            }
+         //   if (Utils.isMobile) {
+         //       this.calcOffset()
+         //       this.propagate('mousemove', this.touch2mouse(event))
+        //    }
             if (this.drug) {
                 this.mousedrag(
                     this.drug.x + event.deltaX,
@@ -119,15 +119,15 @@ export default class Input {
         })
 
         mc.on('panend', event => {
-            if (Utils.isMobile && this.drug) {
-                this.panFade(event)
-            }
+          //  if (Utils.isMobile && this.drug) {
+          //      this.panFade(event)
+          //  }
             this.drug = null
             this.events.emit('cursor-locked', false)
         })
 
         mc.on('tap', event => {
-            if (!Utils.isMobile) return
+        //    if (!Utils.isMobile) return
             this.simMousedown(event)
             if (this.fade) this.fade.stop()
             this.events.emit('cursor-changed', {})
@@ -169,12 +169,18 @@ export default class Input {
         add("gestureend", this.gestureend)
     }
 
-    gesturestart(event) { event.preventDefault() }
-    gesturechange(event) { event.preventDefault() }
-    gestureend(event) { event.preventDefault() }
+    gesturestart(event) {
+         //event.preventDefault() 
+    }
+    gesturechange(event) { 
+        //event.preventDefault() 
+    }
+    gestureend(event) { 
+       // event.preventDefault() 
+    }
 
     mousemove(event) {
-        if (Utils.isMobile) return
+       // if (Utils.isMobile) return
         this.events.emit('cursor-changed', {
             visible: true,
             gridId: this.gridId,
@@ -186,7 +192,7 @@ export default class Input {
     }
 
     mouseout(event) {
-        if (Utils.isMobile) return
+      //  if (Utils.isMobile) return
         this.events.emit('cursor-changed', { visible: false })
         this.propagate('mouseout', event)
     }
@@ -198,7 +204,7 @@ export default class Input {
     }
 
     mousedown(event) {
-        if (Utils.isMobile) return
+       // if (Utils.isMobile) return
         this.events.emit('cursor-locked', true)
         this.propagate('mousedown', event)
         if (event.defaultPrevented) return
@@ -207,14 +213,14 @@ export default class Input {
 
     // Simulated mousedown (for mobile)
    simMousedown(event) {
-       if (event.srcEvent.defaultPrevented) return
-       this.events.emit('grid-mousedown', [this.gridId, event])
-       this.propagate('mousemove', this.touch2mouse(event))
-       this.events.emitSpec(this.rrId, 'update-rr')
-       this.propagate('mousedown', this.touch2mouse(event))
-       setTimeout(() => {
-           this.propagate('click', this.touch2mouse(event))
-       })
+   //    if (event.srcEvent.defaultPrevented) return
+   //    this.events.emit('grid-mousedown', [this.gridId, event])
+   //    this.propagate('mousemove', this.touch2mouse(event))
+   //    this.events.emitSpec(this.rrId, 'update-rr')
+   //    this.propagate('mousedown', this.touch2mouse(event))
+   //    setTimeout(() => {
+  //         this.propagate('click', this.touch2mouse(event))
+  //     })
    }
 
    // Convert touch to "mouse" event
@@ -275,8 +281,8 @@ export default class Input {
             if (this.wmode === 'click' && !this.oldMeta.activated) {
                 return
             }
-            event.originalEvent.preventDefault()
-            event.preventDefault()
+           // event.originalEvent.preventDefault()
+           // event.preventDefault()
         }
 
         event.deltaX = event.deltaX || Utils.getDeltaX(event)
